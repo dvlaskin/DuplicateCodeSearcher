@@ -6,18 +6,23 @@ namespace DuplicateCodeSearcherLib.Utilities
 {
     public class TextUtility
     {
+        /// <summary>
+        /// Split text string to List of rows
+        /// </summary>
+        /// <param name="text">Text string</param>
+        /// <returns></returns>
         public List<string> SplitTextToRows(string text)
         {
             var result = new List<string>();
 
-            int counter = 0;
+            if (string.IsNullOrEmpty(text))
+                return result;
+
             using (var reader = new StringReader(text))
             {
                 string strRow;
                 while ((strRow = reader.ReadLine()) != null )
                 {
-                    counter++;
-                    Console.WriteLine($"Row #{counter}: {strRow}");
                     result.Add(strRow);
                 }
             }

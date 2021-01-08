@@ -5,6 +5,10 @@ VisualStudioVersion = 16.0.808.4
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DuplicateCodeSearcherLib", "DuplicateCodeSearcherLib\DuplicateCodeSearcherLib.csproj", "{C53E22BF-6628-42DA-A148-4F3109231F0D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DuplicateCodeSearcherConsole", "DuplicateCodeSearcherConsole\DuplicateCodeSearcherConsole.csproj", "{DFF5D4E0-1F15-45C3-B6A6-AC4B9D028979}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DuplicateCodeSearcherLib.Tests", "DuplicateCodeSearcherLib.Tests\DuplicateCodeSearcherLib.Tests.csproj", "{B7729E9E-6CE7-405B-B215-5605B0C506E4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{C53E22BF-6628-42DA-A148-4F3109231F0D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C53E22BF-6628-42DA-A148-4F3109231F0D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C53E22BF-6628-42DA-A148-4F3109231F0D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DFF5D4E0-1F15-45C3-B6A6-AC4B9D028979}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DFF5D4E0-1F15-45C3-B6A6-AC4B9D028979}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DFF5D4E0-1F15-45C3-B6A6-AC4B9D028979}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DFF5D4E0-1F15-45C3-B6A6-AC4B9D028979}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B7729E9E-6CE7-405B-B215-5605B0C506E4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B7729E9E-6CE7-405B-B215-5605B0C506E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B7729E9E-6CE7-405B-B215-5605B0C506E4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B7729E9E-6CE7-405B-B215-5605B0C506E4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
