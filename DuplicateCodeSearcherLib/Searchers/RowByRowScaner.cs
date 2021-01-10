@@ -23,8 +23,50 @@ namespace DuplicateCodeSearcherLib.Searchers
 
             foreach (var item in _textsForScan)
             {
-                var itemList = textUtil.SplitTextToRows(item.Text);
-                TextRowsCompare(rowsList, itemList);
+                List<string> itemList = textUtil.SplitTextToRows(item.Text);
+                string processedText = "";
+                Dictionary<string, int> dupliateTexts = TextRowsCompare(rowsList, itemList, out processedText);
+                item.Text = processedText;
+
+                foreach (var duplItem in dupliateTexts)
+                {
+                    if (result.Any(w => w.DuplicateText == duplItem.Key))
+                    {
+                        ScanResult scanResultItem = result.First(w => w.DuplicateText == duplItem.Key);
+                        var duplFileInfo = new FileWithDuplicates()
+                        {
+                            Name = item.Name,
+                            Path = item.Path,
+                            DupliateItemCount = duplItem.Value
+                        };
+
+                        scanResultItem.DuplicateFilesInfos.Add(duplFileInfo);
+                    }
+                    else
+                    {
+                        var duplSelfFileInfo = new FileWithDuplicates()
+                        {
+                            Name = currText.Name,
+                            Path = currText.Path,
+                            DupliateItemCount = duplItem.Value
+                        };
+
+                        var duplFileInfo = new FileWithDuplicates()
+                        {
+                            Name = item.Name,
+                            Path = item.Path,
+                            DupliateItemCount = duplItem.Value
+                        };
+
+                        var scanResultItem = new ScanResult()
+                        {
+                            DuplicateText = duplItem.Key,
+                            DuplicateFilesInfos = new List<FileWithDuplicates>() { duplSelfFileInfo, duplFileInfo }
+                        };
+
+                        result.Add(scanResultItem);
+                    }
+                }
             }
 
 
@@ -32,23 +74,48 @@ namespace DuplicateCodeSearcherLib.Searchers
         }
 
 
-        private void TextRowsCompare(IEnumerable<string> mainRows, IEnumerable<string> comparableRows)
+        private Dictionary<string, int> TextRowsCompare(IEnumerable<string> mainRows, IEnumerable<string> comparableRows, out string processedText)
         {
+            var result = new Dictionary<string, int>();
+
             int rowCount = mainRows.Count() < comparableRows.Count() ? mainRows.Count() : comparableRows.Count();
 
             for (int i = rowCount; i > 1; i--)
             {
-                Console.WriteLine($"{i}==========================================");
-
                 for (int l = 0; l < rowCount; l++)
                 {
                     if ((i + l) > rowCount)
                         break;
 
-                    Console.WriteLine("mRows: " + string.Join(", ", mainRows.Skip(l).Take(i)));
-                    Console.WriteLine("cRows: " + string.Join(", ", comparableRows.Skip(l).Take(i)));
+                    string[] mainRowArr = mainRows.Skip(l).Take(i).ToArray();
+                    string[] compRowArr = comparableRows.Skip(l).Take(i).ToArray();
+
+                    //Console.WriteLine("mRows: " + string.Join(", ", mainRowArr));
+                    //Console.WriteLine("cRows: " + string.Join(", ", compRowArr));
+
+                    if (isEnumerableEquals(mainRowArr, compRowArr))
+                    {
+                        string mainRowStr = string.Join("\r\n", mainRowArr);
+                        if (result.ContainsKey(mainRowStr))
+                        {
+                            result[mainRowStr]++;
+                        }
+                        else
+                        {
+                            result.Add(mainRowStr, 1);
+                        }
+
+                        for (int r = l; r < l+i; r++)
+                        {
+                            comparableRows = comparableRows.Select((x, i) => r == i ? "" : x).ToArray();
+                        }
+                    }
                 }
             }
+
+            processedText = string.Join("\r\n", comparableRows);
+
+            return result;
         }
 
         /// <summary>

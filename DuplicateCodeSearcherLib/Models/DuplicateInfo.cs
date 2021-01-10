@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace DuplicateCodeSearcherLib.Models
 {
-    public class FilesWithDuplicates : SourceInfoBase
+    public class FileWithDuplicates : SourceInfoBase
     {
         public int DupliateItemCount { get; set; }
     }

@@ -23,7 +23,8 @@ namespace DuplicateCodeSearcherLib.Utilities
                 string strRow;
                 while ((strRow = reader.ReadLine()) != null )
                 {
-                    result.Add(strRow);
+                    if(string.IsNullOrEmpty(strRow) == false)
+                        result.Add(strRow);
                 }
             }
 
