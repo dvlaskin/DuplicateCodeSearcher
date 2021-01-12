@@ -13,15 +13,23 @@ namespace DuplicateCodeSearcherConsole
         static void Main(string[] args)
         {
             string text1 = "row1\r\n" +
+                "row1.1\r\n" +
                 "row2\r\n" +
                 "row3\r\n" +
                 "row4\r\n" +
                 "row5\r\n";
 
             string text2 = "row1.1\r\n" +
+                "row1.2\r\n" +
+                "row1.3\r\n" +
+                "row2\r\n" +
+                "row3\r\n" +
+                "row4\r\n" +
+                "row4.1\r\n" +
                 "row2\r\n" +
                 "row3\r\n" +
                 "row4\r\n";
+
 
             string text3 = "row1.2\r\n" +
                 "row2\r\n" +
@@ -41,6 +49,7 @@ namespace DuplicateCodeSearcherConsole
 
             stopWatch.Stop();
             Console.WriteLine($"Calc time => {stopWatch.ElapsedMilliseconds} mlsec");
+            Console.WriteLine($"TotalIterationCount = {test.TotalIterationCount}");
 
             string resJson = JsonConvert.SerializeObject(res, Formatting.Indented);
 

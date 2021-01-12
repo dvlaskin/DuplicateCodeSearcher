@@ -8,6 +8,7 @@ namespace DuplicateCodeSearcherLib.Searchers
 {
     public class RowByRowScaner : SearcherBase
     {
+        public int TotalIterationCount { get; private set; } = 0;
 
         public RowByRowScaner(Stack<ScanSource> textsForScan) : base(textsForScan)
         {
@@ -48,7 +49,7 @@ namespace DuplicateCodeSearcherLib.Searchers
                         {
                             Name = currText.Name,
                             Path = currText.Path,
-                            DupliateItemCount = duplItem.Value
+                            DupliateItemCount = 1
                         };
 
                         var duplFileInfo = new FileWithDuplicates()
@@ -67,8 +68,7 @@ namespace DuplicateCodeSearcherLib.Searchers
                         result.Add(scanResultItem);
                     }
                 }
-            }
-
+            }            
 
             return result;
         }
@@ -78,42 +78,55 @@ namespace DuplicateCodeSearcherLib.Searchers
         {
             var result = new Dictionary<string, int>();
 
+            int currIterationCounter = 0;
+
             int rowCount = mainRows.Count() < comparableRows.Count() ? mainRows.Count() : comparableRows.Count();
 
-            for (int i = rowCount; i > 1; i--)
+            for (int lenChunk = rowCount; lenChunk > 1; lenChunk--)
             {
-                for (int l = 0; l < rowCount; l++)
+                //for (int startMainIndex = 0; startMainIndex < rowCount; startMainIndex++)
+                //{
+                //    if ((lenChunk + startMainIndex) > rowCount)
+                //        break;
+
+                for (int startMainIndex = 0; (lenChunk + startMainIndex) <= rowCount; startMainIndex++)
                 {
-                    if ((i + l) > rowCount)
-                        break;
-
-                    string[] mainRowArr = mainRows.Skip(l).Take(i).ToArray();
-                    string[] compRowArr = comparableRows.Skip(l).Take(i).ToArray();
-
+                    string[] mainRowArr = mainRows.Skip(startMainIndex).Take(lenChunk).ToArray();
                     //Console.WriteLine("mRows: " + string.Join(", ", mainRowArr));
-                    //Console.WriteLine("cRows: " + string.Join(", ", compRowArr));
 
-                    if (isEnumerableEquals(mainRowArr, compRowArr))
+                    for (int startCompareIndex = 0; startCompareIndex < comparableRows.Count(); startCompareIndex++)
                     {
-                        string mainRowStr = string.Join("\r\n", mainRowArr);
-                        if (result.ContainsKey(mainRowStr))
-                        {
-                            result[mainRowStr]++;
-                        }
-                        else
-                        {
-                            result.Add(mainRowStr, 1);
-                        }
+                        TotalIterationCount++;
+                        currIterationCounter++;
 
-                        for (int r = l; r < l+i; r++)
+                        string[] compRowArr = comparableRows.Skip(startCompareIndex).Take(lenChunk).ToArray();
+
+                        //Console.WriteLine("cRows: " + string.Join(", ", compRowArr));
+
+                        if (isEnumerableEquals(mainRowArr, compRowArr))
                         {
-                            comparableRows = comparableRows.Select((x, i) => r == i ? "" : x).ToArray();
+                            string mainRowStr = string.Join("\r\n", mainRowArr);
+                            if (result.ContainsKey(mainRowStr))
+                            {
+                                result[mainRowStr]++;
+                            }
+                            else
+                            {
+                                result.Add(mainRowStr, 1);
+                            }
+
+                            for (int r = startCompareIndex; r < startCompareIndex + lenChunk; r++)
+                            {
+                                comparableRows = comparableRows.Select((x, i) => r == i ? "" : x).ToArray();
+                            }
                         }
                     }
                 }
             }
 
             processedText = string.Join("\r\n", comparableRows);
+
+            Console.WriteLine($"currIterationCounter = {currIterationCounter}");
 
             return result;
         }
