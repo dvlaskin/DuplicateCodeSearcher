@@ -12,14 +12,24 @@ namespace DuplicateCodeSearcherConsole
     {
         static void Main(string[] args)
         {
-            string text1 = "row1\r\n" +
+            Console.Clear();
+            Console.WriteLine("======================");
+
+            string text1 =
+                "row1\r\n" +
                 "row1.1\r\n" +
                 "row2\r\n" +
                 "row3\r\n" +
                 "row4\r\n" +
-                "row5\r\n";
+                "row5\r\n" +
+                "rowText1\r\n" +
+                "rowText1.1\r\n" +
+                "rowEmpty\r\n" +
+                "rowText1\r\n" +
+                "rowText1.1\r\n";
 
-            string text2 = "row1.1\r\n" +
+            string text2 =
+                "row1.1\r\n" +
                 "row1.2\r\n" +
                 "row1.3\r\n" +
                 "row2\r\n" +
@@ -31,11 +41,35 @@ namespace DuplicateCodeSearcherConsole
                 "row4\r\n";
 
 
-            string text3 = "row1.2\r\n" +
+            string text3 =
+                "row1.2\r\n" +
                 "row2\r\n" +
                 "row3\r\n" +
                 "row4\r\n" +
-                "row5.1\r\n";
+                "row5.1\r\n" +
+                "row5.2\r\n" +
+                "row5.3\r\n" +
+                "row2\r\n" +
+                "row3\r\n" +
+                "row4\r\n" +
+                "row5.1\r\n" +
+                "row5.2\r\n" +
+                "row5.3\r\n" +
+                "row5.1\r\n" +
+                "row5.2\r\n" +
+                "row5.1\r\n" +
+                "row5.2\r\n" +
+                "row5.3\r\n";
+            /*
+                - 2
+                row2
+                row3
+                row4
+                - 3
+                row5.1
+                row5.2
+                row5.3
+            */
 
             var sourceStack = new Stack<ScanSource>();
             sourceStack.Push(new ScanSource() { Name = "Text1", Text = text1 });
@@ -44,12 +78,12 @@ namespace DuplicateCodeSearcherConsole
 
             var stopWatch = System.Diagnostics.Stopwatch.StartNew();
 
-            var test = new RowByRowScaner(sourceStack);
-            List<ScanResult> res = test.SearchDuplicates();
+            SearcherBase scanerObj = new RowByRowScaner(sourceStack);
+            List<ScanResult> res = scanerObj.SearchDuplicates();
 
             stopWatch.Stop();
             Console.WriteLine($"Calc time => {stopWatch.ElapsedMilliseconds} mlsec");
-            Console.WriteLine($"TotalIterationCount = {test.TotalIterationCount}");
+            //Console.WriteLine($"TotalIterationCount = {scanerObj.TotalIterationCount}");
 
             string resJson = JsonConvert.SerializeObject(res, Formatting.Indented);
 
