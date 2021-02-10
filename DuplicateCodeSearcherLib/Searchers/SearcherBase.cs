@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using DuplicateCodeSearcherLib.Models;
 
 namespace DuplicateCodeSearcherLib.Searchers
@@ -35,20 +36,53 @@ namespace DuplicateCodeSearcherLib.Searchers
             {
                 ScanSource currText = _textsForScan.Pop();
 
-                List<ScanResult> scanResult = ScanSource(currText);
+                List<ScanResult> selfScanResult = ScanSelfText(currText);
 
-                if (scanResult.Count > 0)
-                    result.AddRange(scanResult);
+                List<ScanResult> sourcesScanResult = ScanSources(currText);
+
+                List<ScanResult> mergedScanResult = MergeScanResults(selfScanResult, sourcesScanResult);
+
+                if (mergedScanResult.Count > 0)
+                    result.AddRange(sourcesScanResult);
             }
 
             return result;
         }
 
+
         /// <summary>
-        /// Scan text source on duplicate code in self text and other sources
+        /// Scan text source on duplicate code in self text
         /// </summary>
         /// <param name="textSource">Source text for scan</param>
         /// <returns></returns>
-        protected abstract List<ScanResult> ScanSource(ScanSource textSource);
+        protected abstract List<ScanResult> ScanSelfText(ScanSource textSource);
+
+        /// <summary>
+        /// Scan text source on duplicate code in other sources
+        /// </summary>
+        /// <param name="textSource">Source text for scan</param>
+        /// <returns></returns>
+        protected abstract List<ScanResult> ScanSources(ScanSource textSource);
+
+        /// <summary>
+        /// Merge scan results
+        /// </summary>
+        /// <param name="selfScanResult">Left scan result</param>
+        /// <param name="sourcesScanResult">Right scan result</param>
+        /// <returns></returns>
+        private List<ScanResult> MergeScanResults(List<ScanResult> selfScanResult, List<ScanResult> sourcesScanResult)
+        {
+            foreach (var sr in selfScanResult)
+            {
+                var sameDuplResult = sourcesScanResult.Where(w => w.DuplicateText == sr.DuplicateText).FirstOrDefault();
+
+                if (sameDuplResult != null)
+                {
+                    sameDuplResult.DuplicateFilesInfos.AddRange(sr.DuplicateFilesInfos);
+                }
+            }
+
+            return sourcesScanResult;
+        }
     }
 }
