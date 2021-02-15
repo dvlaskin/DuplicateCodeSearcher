@@ -17,76 +17,54 @@ namespace DuplicateCodeSearcherConsole
 
 
             string text1 =
-                "row1\r\n" +
+                "Row1\r\n" +
+                "Row2\r\n" +
+                "\tRow3\r\n" +
+                "Row1\r\n" +
+                "Row2\r\n" +
+                "Row2.1";
+
+            string text2 =
                 "row1.1\r\n" +
+                "row1.2\r\n" +
+                "row1.3\r\n" +
+
                 "row2\r\n" +
                 "row3\r\n" +
                 "row4\r\n" +
-                "row5\r\n" +
-                "rowText1\r\n" +
-                "rowText1.1\r\n" +
-                "rowEmpty\r\n" +
-                "rowText1\r\n" +
-                "rowText1.1\r\n";
 
-            string text2 =
-                "row1.1\r\n" + // 0
-                "row1.2\r\n" + // 1
-                "row1.3\r\n" + // 2
+                "row4.1\r\n" +
 
-                "row2\r\n" + // 3
-                "row3\r\n" + // 4
-                "row4\r\n" + // 5
+                "row1.1\r\n" +
+                "row1.2\r\n" +
+                "row1.3\r\n" +
 
-                "row4.1\r\n" + // 6
+                "row2\r\n" +
+                "row3\r\n" +
+                "row4\r\n" +
 
-                "row1.1\r\n" + // 7
-                "row1.2\r\n" + // 8
-                "row1.3\r\n" + // 9
-
-                "row2\r\n" + // 10
-                "row3\r\n" + // 11
-                "row4\r\n" + // 12
-
-                "row1.1\r\n" + // 13
-                "row1.2\r\n" + // 14
-                "row1.3\r\n"; // 15
+                "row1.1\r\n" +
+                "row1.2\r\n" +
+                "row1.3\r\n";
 
 
             string text3 =
-                "row1.2\r\n" +
+                "Row1.1\r\n" +
+                "Row1.2\r\n" +
+                "Row1.3\r\n" +
+
                 "row2\r\n" +
                 "row3\r\n" +
                 "row4\r\n" +
-                "row5.1\r\n" +
-                "row5.2\r\n" +
-                "row5.3\r\n" +
-                "row2\r\n" +
-                "row3\r\n" +
-                "row4\r\n" +
-                "row5.1\r\n" +
-                "row5.2\r\n" +
-                "row5.3\r\n" +
-                "row5.1\r\n" +
-                "row5.2\r\n" +
-                "row5.1\r\n" +
-                "row5.2\r\n" +
-                "row5.3\r\n";
-            /*
-                - 2
-                row2
-                row3
-                row4
-                - 3
-                row5.1
-                row5.2
-                row5.3
-            */
+
+                "Row1\r\n" +
+                "Row2\r\n" +
+                "Row3\r\n";
 
             var sourceStack = new Stack<ScanSource>();
-            //sourceStack.Push(new ScanSource() { Name = "Text1", Text = text1 });
+            sourceStack.Push(new ScanSource() { Name = "Text1", Text = text1 });
             sourceStack.Push(new ScanSource() { Name = "Text2", Text = text2 });
-            //sourceStack.Push(new ScanSource() { Name = "Text3", Text = text3 });
+            sourceStack.Push(new ScanSource() { Name = "Text3", Text = text3 });
 
 
             var stopWatch = System.Diagnostics.Stopwatch.StartNew();

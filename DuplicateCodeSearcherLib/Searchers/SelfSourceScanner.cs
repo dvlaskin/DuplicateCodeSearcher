@@ -10,7 +10,6 @@ namespace DuplicateCodeSearcherLib.Searchers
     {
         public Dictionary<string, int> Scan(List<string> rowsList)
         {
-            // todo: переписать поиск дубликатов кода в собственном тексте
             var result = new Dictionary<string, int>();
 
             int indexMainRow = 0;

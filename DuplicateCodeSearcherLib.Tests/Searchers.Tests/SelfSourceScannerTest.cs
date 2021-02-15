@@ -96,5 +96,48 @@ namespace DuplicateCodeSearcherLib.Tests.Searchers.Tests
             //Assert
             Assert.Equal(expectedResult, resultReal);
         }
+
+        [Fact]
+        public void TestSample_03SelfScanner()
+        {
+            //Arrange
+            string sample_03Text =
+                "Row1\r\n" +
+                "Row2\r\n" +
+                "Row3\r\n" +
+
+                "Row4\r\n" +
+
+                "Row1\r\n" +
+                "Row2\r\n" +
+
+                "Row5\r\n" +
+
+                "Row1\r\n" +
+                "Row2\r\n" +
+                "Row3\r\n";
+
+            var textUtil = new TextUtility();
+            var sourceToScan = textUtil.SplitTextToRows(sample_03Text);
+
+            var duplText = new StringBuilder();
+            duplText.AppendLine("Row1");
+            duplText.AppendLine("Row2");
+            duplText.AppendLine("Row3");
+
+            var expectedResult = new Dictionary<string, int>()
+            {
+                { duplText.ToString(), 1 }
+            };
+
+            var testObj = new SelfSourceScanner();
+
+
+            //Act
+            var resultReal = testObj.Scan(sourceToScan);
+
+            //Assert
+            Assert.Equal(expectedResult, resultReal);
+        }
     }
 }
