@@ -56,18 +56,16 @@ namespace DuplicateCodeSearcherLib.Searchers
 
         protected override List<ScanResult> ScanSources(ScanSource textSource)
         {
-            var result = new List<ScanResult>();
-
-            var textUtil = new TextUtility();
+            var result = new List<ScanResult>();            
             
-            List<string> rowsList = textUtil.SplitTextToRows(textSource.Text);
+            List<string> rowsList = _textUtil.SplitTextToRows(textSource.Text);
 
-            foreach (var item in _textsForScan)
+            foreach (var itemScanSource in _textsForScan)
             {
-                List<string> itemList = textUtil.SplitTextToRows(item.Text);
+                List<string> itemRowsList = _textUtil.SplitTextToRows(itemScanSource.Text);
                 string processedText = "";
-                Dictionary<string, int> dupliateTexts = TextRowsCompare(rowsList, itemList, out processedText);
-                item.Text = processedText;
+                Dictionary<string, int> dupliateTexts = TextRowsCompare(rowsList, itemRowsList, out processedText);
+                itemScanSource.Text = processedText;
 
                 foreach (var duplItem in dupliateTexts)
                 {
@@ -76,8 +74,8 @@ namespace DuplicateCodeSearcherLib.Searchers
                         ScanResult scanResultItem = result.First(w => w.DuplicateText == duplItem.Key);
                         var duplFileInfo = new FileWithDuplicates()
                         {
-                            Name = item.Name,
-                            Path = item.Path,
+                            Name = itemScanSource.Name,
+                            Path = itemScanSource.Path,
                             DupliateItemCount = duplItem.Value
                         };
 
@@ -85,24 +83,24 @@ namespace DuplicateCodeSearcherLib.Searchers
                     }
                     else
                     {
-                        var duplSelfFileInfo = new FileWithDuplicates()
+                        var selfSourceInfo = new FileWithDuplicates()
                         {
                             Name = textSource.Name,
                             Path = textSource.Path,
                             DupliateItemCount = 1
                         };
 
-                        var duplFileInfo = new FileWithDuplicates()
+                        var duplSourceInfo = new FileWithDuplicates()
                         {
-                            Name = item.Name,
-                            Path = item.Path,
+                            Name = itemScanSource.Name,
+                            Path = itemScanSource.Path,
                             DupliateItemCount = duplItem.Value
                         };
 
                         var scanResultItem = new ScanResult()
                         {
                             DuplicateText = duplItem.Key,
-                            DuplicateFilesInfos = new List<FileWithDuplicates>() { duplSelfFileInfo, duplFileInfo }
+                            DuplicateFilesInfos = new List<FileWithDuplicates>() { selfSourceInfo, duplSourceInfo }
                         };
 
                         result.Add(scanResultItem);
