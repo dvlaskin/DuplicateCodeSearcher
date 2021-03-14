@@ -10,24 +10,25 @@ namespace DuplicateCodeSearcherLib.Tests.Searchers.Tests
 {
     public class SelfSourceScannerTest
     {
+        private string envNewLine = Environment.NewLine;
+
         [Fact]
         public void TestSample_01SelfScanner()
         {
             //Arrange
-            string sample_01Text =
-                "Row1\r\n" +
-                "Row2\r\n" +
-                "\tRow3\r\n" +
-                "Row1\r\n" +
-                "Row2\r\n" +
-                "Row2.1";
-
-            var textUtil = new TextUtility();
-            var sourceToScan = textUtil.SplitTextToRows(sample_01Text);
+            var sample_01Text = new List<string>()
+            {
+                "Row1",
+                "Row2",
+                "\tRow3",
+                "Row1",
+                "Row2",
+                "Row2.1"
+            };
 
             var duplText = new StringBuilder();
             duplText.AppendLine("Row1");
-            duplText.AppendLine("Row2");
+            duplText.Append("Row2");
 
             var expectedResult = new Dictionary<string, int>()
             {
@@ -38,7 +39,7 @@ namespace DuplicateCodeSearcherLib.Tests.Searchers.Tests
 
 
             //Act
-            var resultReal = testObj.Scan(sourceToScan);
+            var resultReal = testObj.Scan(sample_01Text);
 
             //Assert
             Assert.Equal(expectedResult, resultReal);
@@ -48,31 +49,30 @@ namespace DuplicateCodeSearcherLib.Tests.Searchers.Tests
         public void TestSample_02SelfScanner()
         {
             //Arrange
-            string sample_02Text =
-                "row1.1\r\n" +
-                "row1.2\r\n" +
-                "row1.3\r\n" +
+            var sample_02Text = new List<string>()
+            {
+                "row1.1",
+                "row1.2",
+                "row1.3",
 
-                "row2\r\n" +
-                "row3\r\n" +
-                "row4\r\n" +
+                "row2",
+                "row3",
+                "row4",
 
-                "row4.1\r\n" +
+                "row4.1",
 
-                "row1.1\r\n" +
-                "row1.2\r\n" +
-                "row1.3\r\n" +
+                "row1.1",
+                "row1.2",
+                "row1.3",
 
-                "row2\r\n" +
-                "row3\r\n" +
-                "row4\r\n" +
+                "row2",
+                "row3",
+                "row4",
 
-                "row1.1\r\n" +
-                "row1.2\r\n" +
-                "row1.3\r\n";
-
-            var textUtil = new TextUtility();
-            var sourceToScan = textUtil.SplitTextToRows(sample_02Text);
+                "row1.1",
+                "row1.2",
+                "row1.3"
+            };
 
             var duplText = new StringBuilder();
             duplText.AppendLine("row1.1");
@@ -80,7 +80,7 @@ namespace DuplicateCodeSearcherLib.Tests.Searchers.Tests
             duplText.AppendLine("row1.3");
             duplText.AppendLine("row2");
             duplText.AppendLine("row3");
-            duplText.AppendLine("row4");
+            duplText.Append("row4");
 
             var expectedResult = new Dictionary<string, int>()
             {
@@ -91,7 +91,7 @@ namespace DuplicateCodeSearcherLib.Tests.Searchers.Tests
 
 
             //Act
-            var resultReal = testObj.Scan(sourceToScan);
+            var resultReal = testObj.Scan(sample_02Text);
 
             //Assert
             Assert.Equal(expectedResult, resultReal);
@@ -101,29 +101,28 @@ namespace DuplicateCodeSearcherLib.Tests.Searchers.Tests
         public void TestSample_03SelfScanner()
         {
             //Arrange
-            string sample_03Text =
-                "Row1\r\n" +
-                "Row2\r\n" +
-                "Row3\r\n" +
+            var sample_03Text = new List<string>()
+            {
+                "Row1",
+                "Row2",
+                "Row3",
 
-                "Row4\r\n" +
+                "Row4",
 
-                "Row1\r\n" +
-                "Row2\r\n" +
+                "Row1",
+                "Row2",
 
-                "Row5\r\n" +
+                "Row5",
 
-                "Row1\r\n" +
-                "Row2\r\n" +
-                "Row3\r\n";
-
-            var textUtil = new TextUtility();
-            var sourceToScan = textUtil.SplitTextToRows(sample_03Text);
+                "Row1",
+                "Row2",
+                "Row3"
+            };                
 
             var duplText = new StringBuilder();
             duplText.AppendLine("Row1");
             duplText.AppendLine("Row2");
-            duplText.AppendLine("Row3");
+            duplText.Append("Row3");
 
             var expectedResult = new Dictionary<string, int>()
             {
@@ -134,7 +133,7 @@ namespace DuplicateCodeSearcherLib.Tests.Searchers.Tests
 
 
             //Act
-            var resultReal = testObj.Scan(sourceToScan);
+            var resultReal = testObj.Scan(sample_03Text);
 
             //Assert
             Assert.Equal(expectedResult, resultReal);

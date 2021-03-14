@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using DuplicateCodeSearcherLib.Utilities;
 
 namespace DuplicateCodeSearcherLib.Searchers
@@ -47,9 +48,9 @@ namespace DuplicateCodeSearcherLib.Searchers
                 // пошаговая проверка начальных дубл. строк
                 CheckDuplicateNextRows(duplRowIndxs);
 
-                if (_duplCodeText.Length > 1)
+                if (Regex.Matches(_duplCodeText.ToString(), Environment.NewLine).Count > 1)
                 {
-                    result.Add(_duplCodeText.ToString(), duplRowIndxs.Count);
+                    result.Add(_duplCodeText.ToString().TrimEnd(Environment.NewLine.ToArray()), duplRowIndxs.Count);
 
                     RemoveDuplicateFromRowsList(duplRowIndxs);
                 }

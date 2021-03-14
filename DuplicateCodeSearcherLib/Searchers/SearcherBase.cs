@@ -78,7 +78,28 @@ namespace DuplicateCodeSearcherLib.Searchers
 
                 if (sameDuplResult != null)
                 {
-                    sameDuplResult.DuplicateFilesInfos.AddRange(sr.DuplicateFilesInfos);
+                    //sameDuplResult.DuplicateFilesInfos.AddRange(sr.DuplicateFilesInfos);
+                    var selfFile = sameDuplResult
+                        .DuplicateFilesInfos
+                        .FirstOrDefault();
+
+                    var existingRecord = sameDuplResult
+                        .DuplicateFilesInfos
+                        .Where(w => w.Name == selfFile.Name && w.Path == selfFile.Path)
+                        .FirstOrDefault();
+
+                    if (existingRecord != null)
+                    {
+                        existingRecord.DupliateItemCount += selfFile.DupliateItemCount;
+                    }
+                    else
+                    {
+                        sameDuplResult.DuplicateFilesInfos.AddRange(sr.DuplicateFilesInfos);
+                    }                        
+                }
+                else
+                {
+                    sourcesScanResult.Add(sr);
                 }
             }
 

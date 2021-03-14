@@ -138,7 +138,7 @@ namespace DuplicateCodeSearcherLib.Searchers
 
                         if (isEnumerableEquals(mainRowArr, compRowArr))
                         {
-                            string mainRowStr = string.Join("\r\n", mainRowArr);
+                            string mainRowStr = string.Join(Environment.NewLine, mainRowArr);
                             if (result.ContainsKey(mainRowStr))
                             {
                                 result[mainRowStr]++;
@@ -157,7 +157,7 @@ namespace DuplicateCodeSearcherLib.Searchers
                 }
             }
 
-            processedText = string.Join("\r\n", comparableRows);
+            processedText = string.Join(Environment.NewLine, comparableRows);
 
             Console.WriteLine($"currIterationCounter = {currIterationCounter}");
 
