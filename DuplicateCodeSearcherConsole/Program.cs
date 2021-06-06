@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using DuplicateCodeSearcherLib.Models;
 using DuplicateCodeSearcherLib.Searchers;
@@ -61,22 +62,31 @@ namespace DuplicateCodeSearcherConsole
                 "Row2\r\n" +
                 "Row3\r\n";
 
-            var sourceStack = new Stack<ScanSource>();
-            sourceStack.Push(new ScanSource() { Name = "Text1", Text = text1 });
-            sourceStack.Push(new ScanSource() { Name = "Text2", Text = text2 });
-            sourceStack.Push(new ScanSource() { Name = "Text3", Text = text3 });
+            string realFilePath = @"/Users/macbookair/Desktop/test.php";
+            var realSource = new ScanSource()
+            {
+                Name = Path.GetFileName(realFilePath),
+                Path = realFilePath,
+                Text = File.ReadAllText(realFilePath)
+            };
+
+            var sourceQueue = new Queue<ScanSource>();
+            //sourceStack.Push(new ScanSource() { Name = "Text1", Text = text1 });
+            //sourceStack.Push(new ScanSource() { Name = "Text2", Text = text2 });
+            //sourceStack.Push(new ScanSource() { Name = "Text3", Text = text3 });
+            sourceQueue.Enqueue(realSource);
 
 
             var stopWatch = System.Diagnostics.Stopwatch.StartNew();
 
-            SearcherBase scanerObj = new RowByRowScanner(sourceStack);
+            SearcherBase scanerObj = new RowByRowScanner(sourceQueue);
             List<ScanResult> res = scanerObj.SearchDuplicates();
 
             stopWatch.Stop();
             Console.WriteLine($"Calc time => {stopWatch.ElapsedMilliseconds} mlsec");
             //Console.WriteLine($"TotalIterationCount = {scanerObj.TotalIterationCount}");
 
-            string resJson = JsonConvert.SerializeObject(res, Formatting.Indented);
+            string resJson = JsonConvert.SerializeObject(res.OrderByDescending(r => r.TotalItems), Formatting.Indented);
 
             Console.WriteLine(resJson);
 

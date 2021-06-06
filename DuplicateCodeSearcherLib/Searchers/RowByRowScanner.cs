@@ -20,7 +20,7 @@ namespace DuplicateCodeSearcherLib.Searchers
         /// Row-by-row search for duplicate code
         /// </summary>
         /// <param name="textsForScan"></param>
-        public RowByRowScanner(Stack<ScanSource> textsForScan) : base(textsForScan)
+        public RowByRowScanner(Queue<ScanSource> textsForScan) : base(textsForScan)
         {
         }
 

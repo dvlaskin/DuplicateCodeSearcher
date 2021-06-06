@@ -13,13 +13,13 @@ namespace DuplicateCodeSearcherLib.Searchers
         /// <summary>
         /// Text sources for scan on duplicate code
         /// </summary>
-        protected Stack<ScanSource> _textsForScan;
+        protected Queue<ScanSource> _textsForScan;
 
         /// <summary>
         /// Base logic searching Duplicate code in ScanSource
         /// </summary>
         /// <param name="textsForScan">Text sources</param>
-        public SearcherBase(Stack<ScanSource> textsForScan)
+        public SearcherBase(Queue<ScanSource> textsForScan)
         {
             _textsForScan = textsForScan;
         }
@@ -34,7 +34,7 @@ namespace DuplicateCodeSearcherLib.Searchers
 
             while (_textsForScan.Count > 0)
             {
-                ScanSource currText = _textsForScan.Pop();
+                ScanSource currText = _textsForScan.Dequeue();
 
                 List<ScanResult> selfScanResult = ScanSelfText(currText);
 

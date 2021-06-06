@@ -41,10 +41,10 @@ namespace DuplicateCodeSearcherLib.Tests.Searchers.Tests
             };
 
 
-            var sourceStack = new Stack<ScanSource>();
-            sourceStack.Push(new ScanSource() { Name = "Text1", Text = string.Join(envNewLine, text1) });
-            sourceStack.Push(new ScanSource() { Name = "Text2", Text = string.Join(envNewLine, text2) });
-            sourceStack.Push(new ScanSource() { Name = "Text3", Text = string.Join(envNewLine, text3) });
+            var sourceQueue = new Queue<ScanSource>();
+            sourceQueue.Enqueue(new ScanSource() { Name = "Text1", Text = string.Join(envNewLine, text1) });
+            sourceQueue.Enqueue(new ScanSource() { Name = "Text2", Text = string.Join(envNewLine, text2) });
+            sourceQueue.Enqueue(new ScanSource() { Name = "Text3", Text = string.Join(envNewLine, text3) });
 
             string[] duplicateText =
             {
@@ -76,9 +76,9 @@ namespace DuplicateCodeSearcherLib.Tests.Searchers.Tests
 
             var duplicateFilesInfos = new List<FileWithDuplicates>()
             {
-                text3Info,
+                text1Info,
                 text2Info,
-                text1Info
+                text3Info
             };
 
             var expectedResult = new List<ScanResult>()
@@ -91,7 +91,7 @@ namespace DuplicateCodeSearcherLib.Tests.Searchers.Tests
             };
 
             //Act
-            var scanerObj = new RowByRowScanner(sourceStack);
+            var scanerObj = new RowByRowScanner(sourceQueue);
             var resultReal = scanerObj.SearchDuplicates();
 
             string expJson = JsonConvert.SerializeObject(expectedResult);
@@ -140,22 +140,30 @@ namespace DuplicateCodeSearcherLib.Tests.Searchers.Tests
             };
 
 
-            var sourceStack = new Stack<ScanSource>();
-            sourceStack.Push(new ScanSource() { Name = "Text1", Text = string.Join(envNewLine, text1) });
-            sourceStack.Push(new ScanSource() { Name = "Text2", Text = string.Join(envNewLine, text2) });
-            sourceStack.Push(new ScanSource() { Name = "Text3", Text = string.Join(envNewLine, text3) });
+            var sourceQueue = new Queue<ScanSource>();
+            sourceQueue.Enqueue(new ScanSource() { Name = "Text1", Text = string.Join(envNewLine, text1) });
+            sourceQueue.Enqueue(new ScanSource() { Name = "Text2", Text = string.Join(envNewLine, text2) });
+            sourceQueue.Enqueue(new ScanSource() { Name = "Text3", Text = string.Join(envNewLine, text3) });
+
+            ///
 
             string[] duplicateText_01 =
             {
                 "Row1",
                 "Row2",
-                "Row3",
-                "Row4"
+                "Row3"
             };
 
             var text1Info_01 = new FileWithDuplicates()
             {
                 Name = "Text1",
+                DupliateItemCount = 2,
+                Path = ""
+            };
+
+            var text2Info_01 = new FileWithDuplicates()
+            {
+                Name = "Text2",
                 DupliateItemCount = 1,
                 Path = ""
             };
@@ -169,15 +177,19 @@ namespace DuplicateCodeSearcherLib.Tests.Searchers.Tests
 
             var duplicateFilesInfos_01 = new List<FileWithDuplicates>()
             {
-                text3Info_01,
-                text1Info_01
+                text1Info_01,
+                text2Info_01,
+                text3Info_01
             };
+
+            ///
 
             string[] duplicateText_02 =
             {
                 "Row1",
                 "Row2",
-                "Row3"
+                "Row3",
+                "Row4"
             };
 
             var text1Info_02 = new FileWithDuplicates()
@@ -187,43 +199,37 @@ namespace DuplicateCodeSearcherLib.Tests.Searchers.Tests
                 Path = ""
             };
 
-            var text2Info_02 = new FileWithDuplicates()
-            {
-                Name = "Text2",
-                DupliateItemCount = 1,
-                Path = ""
-            };
-
             var text3Info_02 = new FileWithDuplicates()
             {
                 Name = "Text3",
-                DupliateItemCount = 2,
+                DupliateItemCount = 1,
                 Path = ""
             };
 
             var duplicateFilesInfos_02 = new List<FileWithDuplicates>()
             {
-                text3Info_02,
-                text2Info_02,
-                text1Info_02
+                text1Info_02,
+                text3Info_02
             };
+
+            ///
 
             var expectedResult = new List<ScanResult>()
             {
                 new ScanResult()
                 {
-                    DuplicateText = string.Join(envNewLine, duplicateText_02),
-                    DuplicateFilesInfos = duplicateFilesInfos_02
+                    DuplicateText = string.Join(envNewLine, duplicateText_01),
+                    DuplicateFilesInfos = duplicateFilesInfos_01
                 },
                 new ScanResult()
                 {
-                    DuplicateText = string.Join(envNewLine, duplicateText_01),
-                    DuplicateFilesInfos = duplicateFilesInfos_01
+                    DuplicateText = string.Join(envNewLine, duplicateText_02),
+                    DuplicateFilesInfos = duplicateFilesInfos_02
                 }
             };
 
             //Act
-            var scanerObj = new RowByRowScanner(sourceStack);
+            var scanerObj = new RowByRowScanner(sourceQueue);
             var resultReal = scanerObj.SearchDuplicates();
 
             string expJson = JsonConvert.SerializeObject(expectedResult);
@@ -273,10 +279,12 @@ namespace DuplicateCodeSearcherLib.Tests.Searchers.Tests
             };
 
 
-            var sourceStack = new Stack<ScanSource>();
-            sourceStack.Push(new ScanSource() { Name = "Text1", Text = string.Join(envNewLine, text1) });
-            sourceStack.Push(new ScanSource() { Name = "Text2", Text = string.Join(envNewLine, text2) });
-            sourceStack.Push(new ScanSource() { Name = "Text3", Text = string.Join(envNewLine, text3) });
+            var sourceQueue = new Queue<ScanSource>();
+            sourceQueue.Enqueue(new ScanSource() { Name = "Text1", Text = string.Join(envNewLine, text1) });
+            sourceQueue.Enqueue(new ScanSource() { Name = "Text2", Text = string.Join(envNewLine, text2) });
+            sourceQueue.Enqueue(new ScanSource() { Name = "Text3", Text = string.Join(envNewLine, text3) });
+
+            ///
 
             string[] duplicateText =
             {
@@ -288,7 +296,7 @@ namespace DuplicateCodeSearcherLib.Tests.Searchers.Tests
             var text1Info = new FileWithDuplicates()
             {
                 Name = "Text1",
-                DupliateItemCount = 3,
+                DupliateItemCount = 2,
                 Path = ""
             };
 
@@ -308,10 +316,12 @@ namespace DuplicateCodeSearcherLib.Tests.Searchers.Tests
 
             var duplicateFilesInfos = new List<FileWithDuplicates>()
             {
-                text3Info,
+                text1Info,
                 text2Info,
-                text1Info
+                text3Info
             };
+
+            ///
 
             var expectedResult = new List<ScanResult>()
             {
@@ -323,7 +333,7 @@ namespace DuplicateCodeSearcherLib.Tests.Searchers.Tests
             };
 
             //Act
-            var scanerObj = new RowByRowScanner(sourceStack);
+            var scanerObj = new RowByRowScanner(sourceQueue);
             var resultReal = scanerObj.SearchDuplicates();
 
             string expJson = JsonConvert.SerializeObject(expectedResult);
@@ -383,17 +393,20 @@ namespace DuplicateCodeSearcherLib.Tests.Searchers.Tests
             };
 
 
-            var sourceStack = new Stack<ScanSource>();
-            sourceStack.Push(new ScanSource() { Name = "Text1", Text = string.Join(envNewLine, text1) });
-            sourceStack.Push(new ScanSource() { Name = "Text2", Text = string.Join(envNewLine, text2) });
+            var sourceQueue = new Queue<ScanSource>();
+            sourceQueue.Enqueue(new ScanSource() { Name = "Text1", Text = string.Join(envNewLine, text1) });
+            sourceQueue.Enqueue(new ScanSource() { Name = "Text2", Text = string.Join(envNewLine, text2) });
 
+            ///
 
             string[] duplicateText_01 =
             {
                 "Row1",
                 "Row2",
                 "Row3",
-                "Row4.1"
+                "Row4",
+                "Row5",
+                "Row6"
             };
 
             var text1Info_01 = new FileWithDuplicates()
@@ -406,24 +419,24 @@ namespace DuplicateCodeSearcherLib.Tests.Searchers.Tests
             var text2Info_01 = new FileWithDuplicates()
             {
                 Name = "Text2",
-                DupliateItemCount = 2,
+                DupliateItemCount = 1,
                 Path = ""
             };
 
             var duplicateFilesInfos_01 = new List<FileWithDuplicates>()
             {
-                text2Info_01,
-                text1Info_01
+                text1Info_01,
+                text2Info_01
             };
+
+            ///
 
             string[] duplicateText_02 =
             {
                 "Row1",
                 "Row2",
                 "Row3",
-                "Row4",
-                "Row5",
-                "Row6"
+                "Row4.1"
             };
 
             var text1Info_02 = new FileWithDuplicates()
@@ -436,21 +449,30 @@ namespace DuplicateCodeSearcherLib.Tests.Searchers.Tests
             var text2Info_02 = new FileWithDuplicates()
             {
                 Name = "Text2",
-                DupliateItemCount = 1,
+                DupliateItemCount = 2,
                 Path = ""
             };
 
             var duplicateFilesInfos_02 = new List<FileWithDuplicates>()
             {
-                text2Info_02,
-                text1Info_02
+                text1Info_02,
+                text2Info_02
             };
+
+            ///
 
             string[] duplicateText_03 =
             {
                 "Row1",
                 "Row2",
                 "Row3"
+            };
+
+            var text1Info_03 = new FileWithDuplicates()
+            {
+                Name = "Text1",
+                DupliateItemCount = 2,
+                Path = ""
             };
 
             var text2Info_03 = new FileWithDuplicates()
@@ -462,16 +484,14 @@ namespace DuplicateCodeSearcherLib.Tests.Searchers.Tests
 
             var duplicateFilesInfos_03 = new List<FileWithDuplicates>()
             {
+                text1Info_03,
                 text2Info_03
             };
 
+            ///
+
             var expectedResult = new List<ScanResult>()
-            {         
-                new ScanResult()
-                {
-                    DuplicateText = string.Join(envNewLine, duplicateText_02),
-                    DuplicateFilesInfos = duplicateFilesInfos_02
-                },
+            {
                 new ScanResult()
                 {
                     DuplicateText = string.Join(envNewLine, duplicateText_01),
@@ -479,13 +499,18 @@ namespace DuplicateCodeSearcherLib.Tests.Searchers.Tests
                 },
                 new ScanResult()
                 {
+                    DuplicateText = string.Join(envNewLine, duplicateText_02),
+                    DuplicateFilesInfos = duplicateFilesInfos_02
+                },
+                new ScanResult()
+                {
                     DuplicateText = string.Join(envNewLine, duplicateText_03),
                     DuplicateFilesInfos = duplicateFilesInfos_03
-                },
+                }
             };
 
             //Act
-            var scanerObj = new RowByRowScanner(sourceStack);
+            var scanerObj = new RowByRowScanner(sourceQueue);
             var resultReal = scanerObj.SearchDuplicates();
 
             string expJson = JsonConvert.SerializeObject(expectedResult);
